@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* React Flow Custom Styles - Dark Theme */
+.react-flow__node {
+  z-index: 10;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.react-flow__node.selected {
+  z-index: 20;
+}
+
+.react-flow__edge-path {
+  stroke-width: 1.5;
+  stroke: #6B7280;
+  stroke-dasharray: 5,5;
+  transition: stroke 0.2s ease;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #9CA3AF;
+  stroke-width: 2;
+  stroke-dasharray: 5,5;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #9CA3AF;
+  stroke-dasharray: 5,5;
+}
+
+.react-flow__controls {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #374151;
+  background: #1F2937;
+}
+
+.react-flow__controls-button {
+  background: #374151;
+  border: 1px solid #4B5563;
+  color: #D1D5DB;
+}
+
+.react-flow__controls-button:hover {
+  background: #4B5563;
+  color: #F9FAFB;
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Hide React Flow watermark */
+.react-flow__attribution {
+  display: none !important;
+}
