@@ -1,9 +1,9 @@
 import type { DragEvent } from 'react';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
   Connection,
   Node,
-  NodeTypes,
+  NodeTypes
 } from 'reactflow';
 import ReactFlow, {
   addEdge,
@@ -14,6 +14,7 @@ import ReactFlow, {
   useNodesState,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
+import { useWorkflow } from '../hooks/useWorkflow';
 import CustomWorkflowNode from './CustomWorkflowNode';
 
 // Define custom node types
@@ -44,10 +45,31 @@ const nodeConfigs = {
 
 export default function CanvasPanel() {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
   const [nodeIdCounter, setNodeIdCounter] = useState(0);
+  
+  // Use the WebSocket workflow hook
+  const { 
+    nodes: workflowNodes, 
+    edges: workflowEdges, 
+    hasReceivedData
+  } = useWorkflow();
+  
+  const [nodes, setNodes, onNodesChange] = useNodesState(workflowNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(workflowEdges);
+
+  // Sync WebSocket data with local state
+  useEffect(() => {
+    if (workflowNodes.length > 0) {
+      setNodes(workflowNodes);
+    }
+  }, [workflowNodes, setNodes]);
+
+  useEffect(() => {
+    if (workflowEdges.length > 0) {
+      setEdges(workflowEdges);
+    }
+  }, [workflowEdges, setEdges]);
 
   // Handle connections between nodes
   const onConnect = useCallback(
@@ -143,14 +165,6 @@ export default function CanvasPanel() {
     []
   );
 
-  // Handle custom edge deletion
-  const handleEdgeDelete = useCallback(
-    (edgeId: string) => {
-      console.log('Deleting edge:', edgeId);
-      setEdges((eds) => eds.filter((edge) => edge.id !== edgeId));
-    },
-    [setEdges]
-  );
 
   return (
     <div className="relative h-full w-full bg-gray-800 overflow-hidden" ref={reactFlowWrapper}>
@@ -199,6 +213,7 @@ export default function CanvasPanel() {
           position="bottom-left"
         />
       </ReactFlow>
+
 
       {/* Empty state message */}
       {nodes.length === 0 && (
