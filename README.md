@@ -11,9 +11,9 @@ the system maps user prompts to atomic actions (act models) and executes them in
 
 ## Structure
 
-- **core**: planning logic, skill contracts, and runtime coordination  
+- **core**: small model for verification, memory logging, and summarization    
 - **skills**: trained act models for basic actions like pick, place, and dip  
-- **agent**: small model for verification, memory logging, and summarization  
+- **agent**:  planning logic, skill contracts, and runtime coordination
 - **ui**: graph interface for task visualization and manual workflow editing
 
 ## Goals
