@@ -23,16 +23,22 @@ const nodeTypes: NodeTypes = {
 
 // No custom edge types needed - using default smoothstep
 
-// Node type configurations with clean icons
+// Node type configurations with ASCII art
 const nodeConfigs = {
-  pick: {
-    icon: '🤖',
+  start: {
+    icon: '┌───┐\n│ ▶ │\n└───┘',
   },
-  move: {
-    icon: '➡️',
+  pick: {
+    icon: '┌─┐\n│R│\n└─┘',
   },
   drop: {
-    icon: '📦',
+    icon: '┌───┐\n│ ▓ │\n└───┘',
+  },
+  delay: {
+    icon: '┌───┐\n│ ⏱ │\n└───┘',
+  },
+  end: {
+    icon: '┌───┐\n│ ⏹ │\n└───┘',
   },
 };
 
@@ -147,7 +153,7 @@ export default function CanvasPanel() {
   );
 
   return (
-    <div className="relative h-full w-full bg-gray-900" ref={reactFlowWrapper}>
+    <div className="relative h-full w-full bg-gray-800 overflow-hidden" ref={reactFlowWrapper}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -160,46 +166,52 @@ export default function CanvasPanel() {
         onNodesDelete={onNodesDelete}
         onEdgesDelete={onEdgesDelete}
         nodeTypes={nodeTypes}
-        defaultViewport={{ x: 0, y: 0, zoom: 1.6 }}
+        defaultViewport={{ x: 0, y: 0, zoom: 1.0 }}
         deleteKeyCode="Delete"
         snapToGrid={true}
         snapGrid={[20, 20]}
+        fitView={false}
         defaultEdgeOptions={{
           animated: false,
           style: { 
             stroke: '#6B7280', 
-            strokeWidth: 1.5,
+            strokeWidth: 2,
             strokeDasharray: '5,5'
           },
           type: 'smoothstep',
         }}
-        className="bg-gray-900"
+        className="bg-gray-800"
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
       >
         <Background
-          color="#374151"
+          color="#4B5563"
           variant={BackgroundVariant.Dots}
           gap={20}
           size={1}
         />
         
         <Controls
-          className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg"
+          className="bg-gray-800/90 backdrop-blur-sm border border-gray-600 rounded-lg shadow-xl"
           showInteractive={false}
+          position="bottom-left"
         />
       </ReactFlow>
 
       {/* Empty state message */}
       {nodes.length === 0 && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="text-center">
-            <div className="text-4xl mb-4 text-gray-400">⚡</div>
-            <h3 className="text-xl font-medium text-gray-300 mb-2">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <div className="text-center bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700">
+            <div className="text-6xl mb-6 text-gray-400">⚡</div>
+            <h3 className="text-2xl font-semibold text-gray-200 mb-3">
               Start Building Your Workflow
             </h3>
-            <p className="text-gray-400 text-sm mb-4">
+            <p className="text-gray-400 text-base mb-6">
               Drag nodes from the toolbox to get started
             </p>
-            <div className="text-xs text-gray-500 space-y-1">
+            <div className="text-sm text-gray-500 space-y-2">
               <p>• Hover over nodes to see delete button</p>
               <p>• Connect to existing edge to delete it</p>
               <p>• Press Delete key to remove selected items</p>

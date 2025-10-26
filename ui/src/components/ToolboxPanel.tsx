@@ -10,9 +10,16 @@ export default function ToolboxPanel({ onAddNode }: ToolboxPanelProps) {
     {
       category: "Triggers",
       nodes: [
-        { type: "pick", title: "Pick", description: "Select an object to pick up", icon: "🤖" },
-        { type: "move", title: "Move", description: "Move to coordinates", icon: "➡️" },
-        { type: "drop", title: "Drop", description: "Drop object at location", icon: "📦" },
+        { type: "start", title: "Start", description: "Start of workflow", icon: "┌───┐\n│ ▶ │\n└───┘" },
+        { type: "end", title: "End", description: "End of workflow", icon: "┌───┐\n│ ⏹ │\n└───┘" },
+      ],
+    },
+    {
+      category: "Actions",
+      nodes: [
+        { type: "pick", title: "Pick", description: "Select an object to pick up", icon: "┌─┐\n│R│\n└─┘" },
+        { type: "drop", title: "Drop", description: "Drop object at location", icon: "┌───┐\n│ ▓ │\n└───┘" },
+        { type: "delay", title: "Delay", description: "Wait for specified time", icon: "┌───┐\n│ ⏱ │\n└───┘" },
       ],
     },
   ];
@@ -49,13 +56,16 @@ export default function ToolboxPanel({ onAddNode }: ToolboxPanelProps) {
                   onDragStart={(e) => onDragStart(e, node)}
                   draggable
                   className="
-                    p-3 bg-gray-700 rounded-lg cursor-grab active:cursor-grabbing
-                    border border-gray-600 hover:border-gray-500 hover:shadow-lg
+                    p-3 bg-gray-700/30 backdrop-blur-sm rounded-lg cursor-grab active:cursor-grabbing
+                    border hover:shadow-lg
                     transition-all duration-200 hover:scale-[1.02]
                   "
+                  style={{
+                    borderColor: 'oklch(0.71 0.2 307.12)',
+                  }}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="text-lg">{node.icon}</div>
+                    <div className="text-[10px] font-mono font-bold text-gray-300 leading-tight whitespace-pre">{node.icon}</div>
                     <div className="flex-1">
                       <h4 className="text-sm font-medium text-white">
                         {node.title}
